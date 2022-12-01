@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  php:
+    build: 
+      context: './php/'
+      args:
+       PHP_VERSION: ${PHP_VERSION}
+    networks:
+      - my-proxy-net
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/
+    container_name: php
+  apache:
+    build:
+      context: './apache/'
+      args:
+       APACHE_VERSION: ${APACHE_VERSION}
+    depends_on:
+      - php
+      # - mysql
+    networks:
+      # - frontend
+      # - backend
+      - my-proxy-net
+    ports:
+      - "8999:80"
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/
+    container_name: apache
+networks:
+  my-proxy-net:
+    name: custom_network
+volumes:
+    data:

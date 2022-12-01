@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  docker2_php8:
+    build:
+      context: './php/'
+      args:
+       PHP_VERSION: ${PHP_VERSION}
+    networks:
+      - my-proxy-net
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+    container_name: docker2_php8
+  docker2_apache2:
+    build:
+      context: './apache/'
+      args:
+       APACHE_VERSION: ${APACHE_VERSION}
+    depends_on:
+      - docker2_php8
+    networks:
+      - my-proxy-net
+    ports:
+      - "10000:80"
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/
+      - ./apache/custom.apache.conf:/usr/local/apache2/conf/custom.apache.conf
+    container_name: docker2_apache2
+networks:
+  my-proxy-net:
+    name: custom_network
+volumes:
+    data:
