@@ -13,3 +13,4 @@ RUN apt update; \
 
 RUN docker-php-ext-install mysqli pdo pdo_mysql zip
 #  bz2 bcmath sockets gd gettext gmp intl ldap pgsql shmop soap 
+# For test
